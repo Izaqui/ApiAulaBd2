@@ -9,7 +9,7 @@ app.listen(port, ()=>{
 
 const db = require('./database');
 
-app.get('/usuarios', db.getUsuarios);
-app.post('/usuarios', db.addUsuario);
-app.put('/usuarios', db.atualizarUsuario);
-app.delete('/usuario/:id', db.deletarUsuario);
+app.get('/usuario', db.getUser);
+app.post('/usuario', db.add);
+app.put('/usuario', db.up);
+app.delete('/usuario/:id', db.delet);

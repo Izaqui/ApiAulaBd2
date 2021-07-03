@@ -1,7 +1,7 @@
 require('dotenv').config();
 const redis = require("redis");
 
-const servico = require('./index')
+const servico = require('../index')
 const client = redis.createClient({
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT
@@ -16,7 +16,7 @@ client.on("error", function(error){
 });
 
 
-const getUsuarios = (request, response) =>{
+const getUser = (request, response) =>{
     client.query('SELECT * FROM usuario', (error, results) => {
         if(error){
             response.status(400).send(error);
@@ -27,30 +27,30 @@ const getUsuarios = (request, response) =>{
 }
     
     
-// Adicionando uma chave
- client.set("Teste", JSON.stringify(getUsuarios), function(err,resp){
+// Add key
+ client.set("Teste", JSON.stringify(getUser), function(err,resp){
      if(err) throw err;
      console.log(resp);
  });
 
-// Buscando pela chave
-// client.get("Teste", function(err, reply){
-//     if(reply != null){
-//         const teste = JSON.parse(reply.toString());
-//         console.log(teste);
-//     }else{
-//         console.log("Chave não encontrada");
-//     }
-// });
+// search key
+ client.get("Teste", function(err, reply){
+     if(reply != null){
+        const teste = JSON.parse(reply.toString());
+         console.log(teste);
+     }else{
+         console.log("key not exist's");
+     }
+ });
 
-// Removendo uma chave
-// client.del("Teste", function(err, resp){
-//     if(err) throw err;
-//     console.log(resp);
-// });
+// Remove key
+ client.del("Teste", function(err, resp){
+     if(err) throw err;
+     console.log(resp);
+ });
 
 // Setando com tempo de vida
-client.setex("Teste", 150000, JSON.stringify(obj), function(err, resp){
+client.setex("Teste", 7200, JSON.stringify(obj), function(err, resp){
     if(err) throw err;
     console.log(resp);
 }); 

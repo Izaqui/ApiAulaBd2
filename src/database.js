@@ -8,12 +8,7 @@ const client = new Client({
     user: process.env.PG_USER,
     password: process.env.PG_PASSWORD
 });
-
-client.connect()
-    .then(()=> console.log('Conectado!'))
-    .catch(err => console.log(err.stack));
-
-const getUsuarios = (request, response) =>{
+const getUser = (request, response) =>{
     client.query('SELECT * FROM usuario', (error, results) => {
         if(error){
             response.status(400).send(error);
@@ -23,7 +18,7 @@ const getUsuarios = (request, response) =>{
     });
 }
     
-const addUsuario = (request, response) =>{
+const add = (request, response) =>{
     const {nome,email} = request.body;
     
     client.query(`INSERT INTO usuario (nome, email) VALUES ($1, $2)`, 
@@ -32,11 +27,11 @@ const addUsuario = (request, response) =>{
             response.status(400).send(error);
             return;
         }
-        response.status(200).send('Usuário inserido!');
+        response.status(200).send('Insert User');
     });
 };
     
-const atualizarUsuario = (request, response) => {
+const up = (request, response) => {
         
     const { nome, email } = request.body;
       
@@ -48,11 +43,11 @@ const atualizarUsuario = (request, response) => {
                 response.status(400).send(error);
                 return;
             }
-        response.status(200).send('Usuário modificado!');
+        response.status(200).send('Upgrade User');
     });
 };
     
-const deletarUsuario = (request, response) => {
+const delet = (request, response) => {
     const id = parseInt(request.params.id)
       
     client.query('DELETE FROM usuario WHERE id = $1', [id], (error, results) => {
@@ -60,13 +55,13 @@ const deletarUsuario = (request, response) => {
             response.status(400).send(error);
             return;
         }
-        response.status(200).send('Usuário deletado!');
+        response.status(200).send('User Delete');
     });
 };
 
 module.exports = {
-    getUsuarios,
-    addUsuario,
-    atualizarUsuario,
-    deletarUsuario
+    getUser,
+    add,
+    up,
+    delet
 };
